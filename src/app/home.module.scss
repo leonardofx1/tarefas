@@ -1,0 +1,46 @@
+@import '../styles/root.module.scss';
+
+.main {
+    width: 100%;
+    height: calc(100vh - 70px);
+    max-height: auto;
+    background-color:$primaryColor;
+
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    height: 100%;
+    gap: 1.5rem;
+    
+}
+
+.titulo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    color:$secondaryColor;
+}
+
+.info {
+    display: flex;
+    gap: 1rem;
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $secondaryColor;
+        width: 252px;
+        height: 62px;
+        border-radius: 15px;
+       font-weight: bold;
+       font-size: 1.4rem;
+
+    }
+}

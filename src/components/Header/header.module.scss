@@ -13,16 +13,25 @@
     width: 100%;
     margin: 0 auto;
     height:100%;
- 
-    & a {
-        color:$secondaryColor;
-        font-weight: bold;
-        font-size: 2rem;
-        text-decoration: none;
-        span {
-            color:$red;
- 
-        }
+    
+    div {
+        display: flex;
+        width: auto;
+
+        gap:1rem;
+    }
+  
+   
+}
+
+.home {
+    color:$secondaryColor;
+    font-weight: bold;
+    font-size: 2rem;
+   
+    span {
+        color:$red;
+
     }
 }
 
@@ -36,4 +45,17 @@
     font-size: 1.2rem;
     border-radius: 1.4rem;
     cursor: pointer;
+}
+
+.task {
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    background-color: $secondaryColor;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    color:black;
+
+    width: 126px;
+   height: 36px;
 }

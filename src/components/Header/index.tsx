@@ -7,9 +7,10 @@ const Header = () => {
         <header className={styles.header}>
             <nav className={styles.nav}>
                 <div>
-                <Link href={'/'}>
+                <Link className={styles.home}href='/'>
                     Tarefas <span>+</span>
                 </Link>
+                <Link className={styles.task} href='/task'>meu painel</Link>
                 </div>
                 <button className={styles.button}>minha conta</button>
             </nav>
