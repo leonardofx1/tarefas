@@ -1,8 +1,12 @@
+'use client'
 import Link from 'next/link'
 import styles from './header.module.scss'
 
-const Header = () => {
+import { signIn, signOut, useSession } from 'next-auth/react'
 
+const Header = () => {
+    const {data:session} = useSession()
+    console.log(session)
     return (
         <header className={styles.header}>
             <nav className={styles.nav}>
@@ -10,9 +14,9 @@ const Header = () => {
                 <Link className={styles.home}href='/'>
                     Tarefas <span>+</span>
                 </Link>
-                <Link className={styles.task} href='/task'>meu painel</Link>
+               {!!session && ( <Link className={styles.task} href='/task'>meu painel</Link>)}
                 </div>
-                <button className={styles.button}>minha conta</button>
+                {!!session ? (<button onClick={()=> signOut()}className={styles.button}>Ola, {session?.user?.name}</button>):(<button onClick={()=> signIn('google')}className={styles.button}>Acessar</button>)}
             </nav>
         </header>
     )
