@@ -6,20 +6,34 @@ import { FaShare } from "react-icons/fa";
 import useFirebase from "@/components/hook/useFirebase";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ITask } from '../../components/hook/useFirebase';
+import { useEffect } from "react";
 
+interface IUser {
+  name:string
+  email:string
+}
 const Task = () => {
-  const { addDocTask, task, setTask, publicTask, setPublicTask } =
+  const { addDocTask, task, setTask, snapshot,publicTask, setPublicTask, fetchData} =
     useFirebase();
   const { data: session, status } = useSession();
 
- 
+  useEffect(()=> {
+    if(session?.user) {
+      const user = session.user as IUser
+      fetchData(user)
+    }
+  } ,[session?.user?.email])
 
+  useEffect(()=> {
+    console.log(snapshot, 'napeffect')
+  } ,[snapshot])
   const router = useRouter()
 
   const handleSubmitTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(session?.user?.name){
-    const user = {
+    if(session?.user?.name && session?.user?.email){
+    const user:IUser = {
         name:session?.user?.name,
         email:session?.user?.email}
     addDocTask({ task, publicTask, user });}
@@ -57,26 +71,19 @@ const Task = () => {
           </form>
           <section className={styles.containerTask}>
             <h2>Minhas tarefas</h2>
-            <article className={styles.bodyTask}>
-              <button>
+           {snapshot?.map((task)=> ( <article className={styles.bodyTask}>
+             { task.publicTask &&( <button>
                 Publica <FaShare color=" #0f2f4d" />
-              </button>
+              </button>)}
               <div>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Doloremque qui sed consequatur, consectetur in praesentium
-                  animi tempora dolorem eligendi omnis, harum et sequi obcaecati
-                  inventore velit. Laborum error fugiat Lorem ipsum dolor sit
-                  amet, consectetur adipisicing elit. Molestiae illum
-                  consectetur voluptatum esse, aspernatur hic, quam
-                  exercitationem quos expedita aliquam odit omnis a unde. Facere
-                  nemo tempora harum ratione! Omnis?recusandae.
+                 {task.task}
                 </p>
                 <span>
                   <FiTrash size={29} />
                 </span>
               </div>
-            </article>
+            </article>))}
           </section>
         </main>
       )}

@@ -7,7 +7,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { useState } from "react";
-interface ITask {
+export interface ITask {
   user: {
     name: string;
     email: string;
@@ -19,18 +19,22 @@ interface ITask {
 const useFirebase = () => {
   const [task, setTask] = useState("");
   const [publicTask, setPublicTask] = useState<boolean>(false);
+  const [snapshot, setSnapshot] = useState<ITask[]>([])
 
-  const fetchData = ({ user }:Pick<ITask,  'user'>) => {
-    const q = query(collection(db, "cities"), where("user", "==", user?.email));
+  const fetchData = ({ email}:{email:string}) => {
+  
+    const q = query(collection(db, "task"), where("user.email", "==", email));
+
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const task = [];
       querySnapshot.forEach((doc) => {
-        task.push(doc.data());
+        setSnapshot((state) => [...state, doc.data() as ITask])
       });
-    });
+     
+    })
   };
 
-  const addDocTask = async ({user, task, publicTask}: ITask) => {
+
+  const addDocTask = async ({user, task, publicTask}: Omit<ITask, "created">) => {
     const newTask: ITask = {
       user: user,
       created: new Date(),
@@ -40,6 +44,6 @@ const useFirebase = () => {
     const add = await addDoc(collection(db, "task"), newTask);
   };
 
-  return { fetchData, addDocTask, task, setTask, publicTask, setPublicTask };
+  return { fetchData, addDocTask,snapshot, task, setTask, publicTask, setPublicTask };
 };
 export default useFirebase;
